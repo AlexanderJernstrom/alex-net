@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h> // pulls in declaration of malloc, free
 
 double derivative(double x1, double x2);
 double simpleLinReg(double xValues[], double yValues[], int n);
@@ -76,6 +77,9 @@ double *linearRegression(double xValues[], double yValues[], int n)
 
     double matrix1[1][1] = {{xyProductSum}, {ySum}};
     double matrix2[2][2] = {{xSquaredSum, xSum}, {xSum, n}};
+
+    double result[2] = {0, 0};
+    return result;
 }
 
 // Matrix multiplication of MxN with NxK, returns the result of the multiplication
@@ -110,13 +114,18 @@ double **matMul(double **matrix1, double **matrix2, int m, int n, int k)
 
 int main()
 {
-    printf("Hello World!\n");
 
     double xValues[] = {1, 2, 3, 4, 5};
     double yValues[] = {2, 4, 6, 8, 10};
-    // Should get k = 2
 
-    printf("k = %f\n", simpleLinReg(xValues, yValues, 5));
+    double matrix1[2][3] = {{1, 2, 3}, {4, 5, 6}};
+    double matrix2[3][2] = {{7, 8}, {9, 10}, {11, 12}};
+
+    double **stuff = matMul(matrix1, matrix2, 2, 3, 2);
+    // print the dimensiosn of the matrix
+    printf("Dimensions: %f\n", stuff[0][2]);
+
+    // printf("k = %f\n", simpleLinReg(xValues, yValues, 5));
 
     return 0;
 }
