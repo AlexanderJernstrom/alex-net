@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "loss_functions.h": "c",
+        "stdio.h": "c",
+        "stdlib.h": "c"
+    }
+}
