@@ -1,6 +1,3 @@
-#ifndef LOSS_FUNCTIONS_H
-#define LOSS_FUNCTIONS_H
-
 double mse(double x[], double y[], int n, double slope)
 {
     double sum = 0;
@@ -25,5 +22,3 @@ double pointMSE(double observed, double predicted)
 {
     return (observed - predicted) * (observed - predicted);
 }
-
-#endif
