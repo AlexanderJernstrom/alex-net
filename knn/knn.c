@@ -1,31 +1,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>
+#include "knn.h"
 // {class("class of the point"), dim("how many dimensions the poins are in"), coords("the coordinates of the point")}
-struct knnPoint
-{
-    int class;
-    int dim;
-    double *coords;
-};
 
-struct knnPointDist
-{
-    int class;
-    double distance;
-};
-
-struct Point
-{
-    int dim;
-    double *coords;
-};
-
-struct classOccurence
-{
-    int class;
-    int occurences;
-};
 int *kNearestNeighbors(int k, struct knnPoint classifiedPoints[], struct Point unclassified[], int nUnclassified, int nClassified)
 {
     if (k > nClassified)

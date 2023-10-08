@@ -1,5 +1,6 @@
 #include "regression/linear_regression.h"
 #include "knn/knn.h"
+#include "regression/logistic_regression.h"
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
 
@@ -88,10 +89,17 @@ int main()
 
     int *results = kNearestNeighbors(3, classifiedPoints, unclassified, 1, 4);
 
+    // Logistic regression tests
+    int xValuesLogistic[] = {500, 480, 550, 530, 520, 480, 400};
+    int yValuesLogistic[] = {1, 0, 1, 1, 1, 0, 0};
+    double *logisticResult = logisticRegression(xValuesLogistic, yValuesLogistic, 8);
     printf("Class: %d\n", results[0]);
 
     // print out result
     printf("K value: %f and M value: %f\n", result[0], result[1]);
+
+    printf("a value: %f and b value: %f\n", logisticResult[0], logisticResult[1]);
+    printf("logistic funtction value: %f", logisticFunction(495, 0.04195, -205.926));
 
     // print the dimensiosn of the matrix
 

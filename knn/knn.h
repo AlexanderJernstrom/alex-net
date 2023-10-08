@@ -26,6 +26,7 @@ struct classOccurence
     int occurences;
 };
 
+int pickPointClass(struct knnPointDist pointDistance[], int k, int n);
 int *kNearestNeighbors(int k, struct knnPoint classifiedPoints[], struct Point unclassified[], int nUnclassified, int nClassified);
 int comparePoints(const void *a, const void *b);
 int comparOccurences(const void *a, const void *b);
