@@ -4,7 +4,7 @@
 double meanSquaredError(double observed[], double predicted[], int n);
 double pointMSE(double observed, double predicted);
 double mse(double x[], double y[], int n, double slope);
-double pointLogLoss(double observed, double predicted, double currA, double currB);
+double pointLogLoss(double observed, double predicted);
 double logLoss(double observed[], double predicted[], int n, double currA, double currB);
 
 #endif

@@ -25,9 +25,12 @@ double pointMSE(double observed, double predicted)
 }
 
 // Reference: https://developers.google.com/machine-learning/crash-course/logistic-regression/model-training
-double pointLogLoss(double observed, double predicted, double currA, double currB)
+double pointLogLoss(double observed, double predicted)
 {
-    return -(observed * log(predicted)) - ((1 - observed) * log(1 - predicted));
+    double logLoss = 0.0;
+
+    logLoss = observed * log(predicted) + (1 - observed) * log(1 - predicted);
+    return -logLoss;
 }
 
 double logLoss(double observed[], double predicted[], int n, double currA, double currB)
@@ -35,7 +38,7 @@ double logLoss(double observed[], double predicted[], int n, double currA, doubl
     double sum = 0;
     for (int i = 0; i < n; i++)
     {
-        sum += pointLogLoss(observed[i], predicted[i], currA, currB);
+        sum += pointLogLoss(observed[i], predicted[i]);
     }
     return sum / n;
 }
