@@ -3,6 +3,7 @@
 #include "knn/knn.h"
 #include "regression/logistic_regression.h"
 #include "functions/loss_functions.h"
+#include "nn/model/nn.h"
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
 
@@ -140,6 +141,8 @@ int main()
     double loss = pointLogLoss(observed, predicted);
     double aLoss = pointLogLoss(observed, deltaPred);
 
-    printf("Predict: %f , deltaPred: %f\n", predicted, deltaPred);
+    NeuralNet nn = initializeNN(5, 3, 1);
+    printNN(nn);
+
     return 0;
 }
