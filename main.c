@@ -3,6 +3,7 @@
 #include "knn/knn.h"
 #include "regression/logistic_regression.h"
 #include "functions/loss_functions.h"
+#include "linalg/matrix.h"
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
 
@@ -133,13 +134,17 @@ int main()
 
     // printf("k = %f\n", simpleLinReg(xValues, yValues, 5));
     // For point(450, 0)
-    double observed = 0;
-    double predicted = logisticFunction(450, 1, -450);
-    double deltaPred = logisticFunction(450, 1 + 0.01, -450);
-
-    double loss = pointLogLoss(observed, predicted);
-    double aLoss = pointLogLoss(observed, deltaPred);
-
-    printf("Predict: %f , deltaPred: %f\n", predicted, deltaPred);
+    struct Matrix m = createMatrix(3, 3);
+    setMatrix(&m, 0, 0, 1);
+    setMatrix(&m, 0, 1, 0);
+    setMatrix(&m, 0, 2, 2);
+    setMatrix(&m, 1, 0, 3);
+    setMatrix(&m, 1, 1, 4);
+    setMatrix(&m, 1, 2, 9);
+    setMatrix(&m, 2, 0, 8);
+    setMatrix(&m, 2, 1, 7);
+    setMatrix(&m, 2, 2, 6);
+    float res = getVal(&m, 1, 1);
+    printf("Result: %d", res);
     return 0;
 }

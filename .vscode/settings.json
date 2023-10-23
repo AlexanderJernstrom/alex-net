@@ -4,6 +4,7 @@
     "stdio.h": "c",
     "stdlib.h": "c",
     "calculus.h": "c",
-    "knn.h": "c"
+    "knn.h": "c",
+    "matrix.h": "c"
   }
 }
