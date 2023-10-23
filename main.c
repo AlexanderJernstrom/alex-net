@@ -4,6 +4,7 @@
 #include "regression/logistic_regression.h"
 #include "functions/loss_functions.h"
 #include "linalg/matrix.h"
+#include "nn/model/nn.h"
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
 
@@ -146,5 +147,15 @@ int main()
     setMatrix(&m, 2, 2, 6);
     float res = getVal(&m, 1, 1);
     printf("Result: %d", res);
+    double observed = 0;
+    double predicted = logisticFunction(450, 1, -450);
+    double deltaPred = logisticFunction(450, 1 + 0.01, -450);
+
+    double loss = pointLogLoss(observed, predicted);
+    double aLoss = pointLogLoss(observed, deltaPred);
+
+    NeuralNet nn = initializeNN(5, 3, 1);
+    printNN(nn);
+
     return 0;
 }
