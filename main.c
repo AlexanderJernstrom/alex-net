@@ -145,17 +145,35 @@ int main()
     setMatrix(&m, 2, 0, 8);
     setMatrix(&m, 2, 1, 7);
     setMatrix(&m, 2, 2, 6);
-    float res = getVal(&m, 1, 1);
-    printf("Result: %d", res);
+
+    struct Matrix m2 = createMatrix(3, 1);
+    setMatrix(&m2, 0, 0, 1);
+    setMatrix(&m2, 1, 0, 0);
+    setMatrix(&m2, 2, 0, 2);
+
+    struct Matrix out = createMatrix(3, 1);
+    matMul(&m, &m2, &out);
+    for (int i = 0; i < (out.cols * out.rows); i++)
+    {
+        printf("Element %f: \n", out.elements[i]);
+    }
+
     double observed = 0;
     double predicted = logisticFunction(450, 1, -450);
     double deltaPred = logisticFunction(450, 1 + 0.01, -450);
 
     double loss = pointLogLoss(observed, predicted);
     double aLoss = pointLogLoss(observed, deltaPred);
+    // Neural nets
+    struct NeuralNet nn = initializeNN(2, 3, 3);
 
-    NeuralNet nn = initializeNN(5, 3, 1);
-    printNN(nn);
+    struct Matrix input_matrix = createMatrix(3, 1);
+    setMatrix(&input_matrix, 0, 0, 1);
+    setMatrix(&input_matrix, 1, 0, 2);
+    setMatrix(&input_matrix, 2, 0, 3);
+    struct Matrix result_mat = forward(nn, input_matrix);
+    printMatrix(result_mat);
+    //    printNN(nn);
 
     return 0;
 }

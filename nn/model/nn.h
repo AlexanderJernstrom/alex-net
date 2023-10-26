@@ -1,18 +1,22 @@
 #ifndef NN_H
 #define NN_H
-typedef struct
+
+struct Layer
+{
+    struct Matrix weights;
+    struct Matrix biases;
+    double n_nodes;
+};
+struct NeuralNet
 {
     int n_hidden_layers;
     int n_input;
     int n_output;
-    Layer *layers;
-} NeuralNet;
-typedef struct
-{
-    double *weights;
-    double *biases;
-    double n_nodes;
-} Layer;
-NeuralNet initializeNN(int n_layers, int n_inputs, int n_outputs);
-void printNN(NeuralNet nn);
+    struct Layer *layers;
+};
+
+struct Matrix forward(struct NeuralNet nn, struct Matrix inputs);
+
+struct NeuralNet initializeNN(int n_layers, int n_inputs, int n_outputs);
+void printNN(struct NeuralNet nn);
 #endif

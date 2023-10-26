@@ -5,6 +5,25 @@
     "stdlib.h": "c",
     "calculus.h": "c",
     "knn.h": "c",
-    "matrix.h": "c"
+    "matrix.h": "c",
+    "nn.h": "c",
+    "__hash_table": "c",
+    "__split_buffer": "c",
+    "__memory": "c",
+    "functional": "c",
+    "iterator": "c",
+    "memory_resource": "c",
+    "iosfwd": "c",
+    "istream": "c",
+    "memory": "c",
+    "mutex": "c",
+    "optional": "c",
+    "tuple": "c",
+    "unordered_map": "c",
+    "utility": "c",
+    "variant": "c",
+    "vector": "c",
+    "concepts": "c",
+    "type_traits": "c"
   }
 }

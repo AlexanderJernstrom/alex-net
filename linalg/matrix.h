@@ -9,6 +9,9 @@ struct Matrix
 };
 
 double getVal(struct Matrix *matrix, int row, int col);
-struct Matrix createMatrix(int cols, int rows);
+struct Matrix createMatrix(int rows, int cols);
 void setMatrix(struct Matrix *matrix, int row, int col, double value);
+void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out);
+void printMatrix(struct Matrix m);
+
 #endif
