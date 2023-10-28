@@ -2,11 +2,12 @@
 #include "nn.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include "../../functions/activation_functions.h"
 void init_bias(struct Matrix *biases)
 {
     for (int i = 0; i < (biases->cols * biases->rows); i++)
     {
-        biases->elements[i] = 0;
+        biases->elements[i] = 1;
     }
 }
 
@@ -14,7 +15,7 @@ void init_weights(struct Matrix *weights)
 {
     for (int i = 0; i < (weights->cols * weights->rows); i++)
     {
-        weights->elements[i] = 5;
+        weights->elements[i] = 2;
     }
 }
 
@@ -50,10 +51,16 @@ struct Matrix forward(struct NeuralNet nn, struct Matrix inputs)
     {
 
         struct Matrix weights_matrix = nn.layers[i].weights;
+        struct Matrix bias_matrix = nn.layers[i].biases;
 
         matMul(&output, &weights_matrix, &output);
+        matAdd(&output, &bias_matrix, &output);
     }
     return output;
+}
+
+void reluLayer(struct Matrix *inputMatrix)
+{
 }
 
 void printNN(struct NeuralNet nn)

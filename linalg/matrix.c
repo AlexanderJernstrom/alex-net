@@ -32,6 +32,14 @@ void printMatrix(struct Matrix m)
 
 void matAdd(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
 {
+    if ((matrixA->cols * matrixA->rows) == (matrixB->cols * matrixB->rows))
+    {
+
+        for (int i = 0; i < (matrixA->cols * matrixA->rows); i++)
+        {
+            out->elements[i] = matrixA->elements[i] + matrixB->elements[i];
+        }
+    }
 }
 
 void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
