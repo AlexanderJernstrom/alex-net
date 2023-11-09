@@ -5,6 +5,7 @@
 #include "functions/loss_functions.h"
 #include "linalg/matrix.h"
 #include "nn/model/nn.h"
+#include "nn/model/layers.h"
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
 
@@ -97,7 +98,7 @@ int main()
     double xValuesLogistic[] = {500, 480, 550, 530, 520, 480, 400};
     double yValuesLogistic[] = {1, 0, 1, 1, 1, 0, 0};
     // Feature scaling
-    double meanX = 0;
+    /* double meanX = 0;
     double stdDevX = 0;
 
     double scaledXValues[7] = {};
@@ -129,34 +130,12 @@ int main()
     printf("K value: %f and M value: %f\n", result[0], result[1]);
 
     printf("a value: %f and b value: %f\n", logisticResult[0], logisticResult[1]);
-    printf("logistic funtction value: %f", logisticFunction(495, 1.9559, -958.8844));
+    printf("logistic funtction value: %f", logisticFunction(495, 1.9559, -958.8844)); */
 
     // print the dimensiosn of the matrix
 
     // printf("k = %f\n", simpleLinReg(xValues, yValues, 5));
     // For point(450, 0)
-    struct Matrix m = createMatrix(3, 3);
-    setMatrix(&m, 0, 0, 1);
-    setMatrix(&m, 0, 1, 0);
-    setMatrix(&m, 0, 2, 2);
-    setMatrix(&m, 1, 0, 3);
-    setMatrix(&m, 1, 1, 4);
-    setMatrix(&m, 1, 2, 9);
-    setMatrix(&m, 2, 0, 8);
-    setMatrix(&m, 2, 1, 7);
-    setMatrix(&m, 2, 2, 6);
-
-    struct Matrix m2 = createMatrix(3, 1);
-    setMatrix(&m2, 0, 0, 1);
-    setMatrix(&m2, 1, 0, 0);
-    setMatrix(&m2, 2, 0, 2);
-
-    struct Matrix out = createMatrix(3, 1);
-    matMul(&m, &m2, &out);
-    for (int i = 0; i < (out.cols * out.rows); i++)
-    {
-        printf("Element %f: \n", out.elements[i]);
-    }
 
     double observed = 0;
     double predicted = logisticFunction(450, 1, -450);
@@ -165,15 +144,38 @@ int main()
     double loss = pointLogLoss(observed, predicted);
     double aLoss = pointLogLoss(observed, deltaPred);
     // Neural nets
-    struct NeuralNet nn = initializeNN(2, 3, 3);
+    struct NeuralNet nn = initializeNN(1, 3, 3);
 
     struct Matrix input_matrix = createMatrix(3, 1);
     setMatrix(&input_matrix, 0, 0, 1);
     setMatrix(&input_matrix, 1, 0, 2);
-    setMatrix(&input_matrix, 2, 0, 3);
-    struct Matrix result_mat = forward(nn, input_matrix);
-    printMatrix(result_mat);
-    //    printNN(nn);
+    setMatrix(&input_matrix, 2, 0, -10);
+    printMatrix(input_matrix);
+    denseLayer(&input_matrix);
+    printf("After dense\n");
+    printMatrix(input_matrix);
 
+    struct Matrix input_matrix1 = createMatrix(3, 1);
+    setMatrix(&input_matrix1, 0, 0, 1);
+    setMatrix(&input_matrix1, 1, 0, 2);
+    setMatrix(&input_matrix1, 2, 0, -10);
+
+    struct Matrix second_matrix = createMatrix(3, 3);
+    setMatrix(&second_matrix, 0, 0, 2);
+    setMatrix(&second_matrix, 0, 1, 2);
+    setMatrix(&second_matrix, 0, 2, 2);
+    setMatrix(&second_matrix, 1, 0, 2);
+    setMatrix(&second_matrix, 1, 1, 2);
+    setMatrix(&second_matrix, 1, 2, 2);
+    setMatrix(&second_matrix, 2, 0, 2);
+    setMatrix(&second_matrix, 2, 1, 2);
+    setMatrix(&second_matrix, 2, 2, 2);
+
+    struct Matrix matMulRes = createMatrix(3, 1);
+
+    matMul(&second_matrix, &input_matrix1, &matMulRes);
+    printMatrix(matMulRes);
+    //    printNN(nn);
+    // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
     return 0;
 }

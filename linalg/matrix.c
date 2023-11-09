@@ -49,9 +49,11 @@ void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
         printf("Wrong dimensions");
     }
     int n = matrixA->cols;
-    for (int i = 0; i < matrixA->rows; i++)
+    int m = matrixA->rows;
+    int p = matrixB->cols;
+    for (int i = 0; i < m; i++)
     {
-        for (int j = 0; j < matrixB->cols; j++)
+        for (int j = 0; j < p; j++)
         {
             double sum = 0;
 
@@ -63,3 +65,9 @@ void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
         }
     }
 };
+
+void transpose(struct Matrix *matrix)
+{
+    matrix->cols = matrix->rows;
+    matrix->rows = matrix->cols;
+}
