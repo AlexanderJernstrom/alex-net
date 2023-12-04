@@ -24,6 +24,11 @@ double pointMSE(double observed, double predicted)
     return (observed - predicted) * (observed - predicted);
 }
 
+double pointMSEDerivative(double observed, double predicted)
+{
+    return 2 * (observed - predicted);
+}
+
 // Reference: https://developers.google.com/machine-learning/crash-course/logistic-regression/model-training
 double pointLogLoss(double observed, double predicted)
 {

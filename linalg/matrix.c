@@ -40,6 +40,40 @@ void matAdd(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
             out->elements[i] = matrixA->elements[i] + matrixB->elements[i];
         }
     }
+    else
+    {
+        printf("Something wrong with dims \n");
+    }
+}
+
+struct Matrix *deepCopyMatrix(const struct Matrix *original)
+{
+    // Allocate memory for the new matrix
+    struct Matrix *copy = malloc(sizeof(struct Matrix));
+    if (copy == NULL)
+    {
+        return NULL; // Memory allocation failed
+    }
+
+    // Copy rows and cols
+    copy->rows = original->rows;
+    copy->cols = original->cols;
+
+    // Allocate memory for the elements
+    copy->elements = malloc(sizeof(double) * copy->rows * copy->cols);
+    if (copy->elements == NULL)
+    {
+        free(copy);  // Free the previously allocated memory
+        return NULL; // Memory allocation failed
+    }
+
+    // Copy the elements
+    for (int i = 0; i < copy->rows * copy->cols; i++)
+    {
+        copy->elements[i] = original->elements[i];
+    }
+
+    return copy;
 }
 
 void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
@@ -66,8 +100,11 @@ void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
     }
 };
 
-void transpose(struct Matrix *matrix)
+struct Matrix transpose(struct Matrix *matrix)
 {
-    matrix->cols = matrix->rows;
-    matrix->rows = matrix->cols;
+
+    struct Matrix *transposedMatrix = deepCopyMatrix(matrix);
+    transposedMatrix->cols = matrix->rows;
+    transposedMatrix->rows = matrix->cols;
+    return *transposedMatrix;
 }

@@ -24,6 +24,7 @@
     "variant": "c",
     "vector": "c",
     "concepts": "c",
-    "type_traits": "c"
+    "type_traits": "c",
+    "activation_functions.h": "c"
   }
 }

@@ -8,7 +8,7 @@
 #include "nn/model/layers.h"
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
-
+#include "nn/tests/nn_test.h"
 // 1 2 3
 // 4 5 6
 
@@ -144,38 +144,12 @@ int main()
     double loss = pointLogLoss(observed, predicted);
     double aLoss = pointLogLoss(observed, deltaPred);
     // Neural nets
-    struct NeuralNet nn = initializeNN(1, 3, 3);
-
-    struct Matrix input_matrix = createMatrix(3, 1);
-    setMatrix(&input_matrix, 0, 0, 1);
-    setMatrix(&input_matrix, 1, 0, 2);
-    setMatrix(&input_matrix, 2, 0, -10);
-    printMatrix(input_matrix);
-    denseLayer(&input_matrix);
-    printf("After dense\n");
-    printMatrix(input_matrix);
-
-    struct Matrix input_matrix1 = createMatrix(3, 1);
-    setMatrix(&input_matrix1, 0, 0, 1);
-    setMatrix(&input_matrix1, 1, 0, 2);
-    setMatrix(&input_matrix1, 2, 0, -10);
-
-    struct Matrix second_matrix = createMatrix(3, 3);
-    setMatrix(&second_matrix, 0, 0, 2);
-    setMatrix(&second_matrix, 0, 1, 2);
-    setMatrix(&second_matrix, 0, 2, 2);
-    setMatrix(&second_matrix, 1, 0, 2);
-    setMatrix(&second_matrix, 1, 1, 2);
-    setMatrix(&second_matrix, 1, 2, 2);
-    setMatrix(&second_matrix, 2, 0, 2);
-    setMatrix(&second_matrix, 2, 1, 2);
-    setMatrix(&second_matrix, 2, 2, 2);
-
-    struct Matrix matMulRes = createMatrix(3, 1);
-
-    matMul(&second_matrix, &input_matrix1, &matMulRes);
-    printMatrix(matMulRes);
-    //    printNN(nn);
     // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
+
+    test_nn();
     return 0;
 }
+
+// Layer {forward_func: void, backwards_func: void}
+//
+//
