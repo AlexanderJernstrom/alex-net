@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h> // pulls in declaration of malloc, free
 #include "nn/tests/nn_test.h"
+#include "examples/linear_regression_eval.h"
 // 1 2 3
 // 4 5 6
 
@@ -146,7 +147,8 @@ int main()
     // Neural nets
     // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
 
-    test_nn();
+    // test_nn();
+    calculateRegression();
     return 0;
 }
 

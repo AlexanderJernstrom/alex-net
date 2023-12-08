@@ -36,7 +36,7 @@ double *linearRegression(double xValues[], double yValues[], int n)
     float m = 1;
     // y = kx + m
     // error: ((y) - (kx1 + m))^2
-    double learning_rate = 0.01;
+    double learning_rate = 0.001;
     double error = 10;
     int iter = 0;
     double dSlope = 0;
