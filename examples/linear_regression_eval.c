@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "linear_regression_eval.h"
 #include "../regression/linear_regression.h"
+#include "../functions/evaluation_functions.h"
 
 void extractHousePriceFromLine(char *line)
 {
@@ -57,6 +58,7 @@ void calculateRegression()
 {
     HousePrice *house_prices = loadHousePricesFromCsv();
     int n_training = 1400;
+    int n_validation = 400;
     // Träningsdata
     double x[n_training];
     double y[n_training];
@@ -68,5 +70,17 @@ void calculateRegression()
     }
 
     double *values = linearRegression(x, y, n_training);
+
     printf("k=%f, m=%f", values[0], values[1]);
+
+    // Evaluation
+
+    double *yPred = malloc(sizeof(double) * n_validation);
+    for (int i = 0; i < n_validation; i++)
+    {
+        yPred[i] = (house_prices[i + n_training].area * values[0]) + values[1];
+    }
+    printf("First prediction real value: %f, predicted value: %f", house_prices[1400].price, yPred[0]);
+    double r2 = r2Score(y, yPred, n_validation);
+    printf("R2 score: %f", r2);
 }

@@ -33,16 +33,16 @@ double simpleLinReg(double xValues[], double yValues[], int n)
 double *linearRegression(double xValues[], double yValues[], int n)
 {
     float k = 1;
-    float m = 1;
+    float m = 0;
     // y = kx + m
     // error: ((y) - (kx1 + m))^2
-    double learning_rate = 0.001;
+    double learning_rate = 0.0001;
     double error = 10;
     int iter = 0;
     double dSlope = 0;
     double dIntercept = 0;
 
-    while (iter < 2000)
+    while (iter < 5000)
     {
         double *predicted = malloc(n * sizeof(double *));
 
@@ -51,13 +51,17 @@ double *linearRegression(double xValues[], double yValues[], int n)
             predicted[i] = (xValues[i] * k) + m;
         }
         error = meanSquaredError(yValues, predicted, n);
+        printf("\n Iteration: %d, error: %f", iter, error);
 
         for (int i = 0; i < n; i++)
         {
             // y = kx + m
             // dSlope = errk(k+h) - err / h
-            dSlope += derivative(pointMSE(yValues[i], (xValues[i] * (k + 0.01)) + m), pointMSE(yValues[i], (xValues[i] * k) + m));
-            dIntercept += derivative(pointMSE(yValues[i], (xValues[i] * k) + (m + 0.01)), pointMSE(yValues[i], (xValues[i] * k) + m));
+            double slopeIncrease = xValues[i] * (k + 0.001) + m;
+            double interceptIncrease = (xValues[i] * k) + (m + 0.001);
+            double currentLinearValue = (xValues[i] * k) + m;
+            dSlope += linearDSlope(k, m, xValues[i], yValues[i]);
+            dIntercept += linearDIntercept(k, m, xValues[i], yValues[i]);
         }
         // print dSlope and dIntercept
         dSlope = dSlope / n;
