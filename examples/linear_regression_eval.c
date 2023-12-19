@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 #include "linear_regression_eval.h"
 #include "../regression/linear_regression.h"
 #include "../functions/evaluation_functions.h"
@@ -63,9 +64,32 @@ void calculateRegression()
     double x[n_training];
     double y[n_training];
 
+    // Feature scaling
+    double meanX = 0;
+    double stdDev = 0;
     for (int i = 0; i < n_training; i++)
     {
-        x[i] = house_prices[i].area;
+        meanX += house_prices[i].area;
+    }
+    meanX = meanX / n_training;
+    for (int i = 0; i < n_training; i++)
+    {
+        stdDev += (house_prices[i].area - meanX) * (house_prices[i].area - meanX);
+    }
+    stdDev = sqrt(stdDev / n_training);
+
+    // Output scaling
+    /* double meanY = 0;
+    double stdDevY = 0;
+    for (int i = 0; i < n_training; i++)
+    {
+        meanY += house_prices[i].price;
+    }
+    meanY = meanY / n_training; */
+
+    for (int i = 0; i < n_training; i++)
+    {
+        x[i] = (house_prices[i].area - meanX) / stdDev;
         y[i] = house_prices[i].price;
     }
 

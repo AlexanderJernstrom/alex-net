@@ -42,7 +42,7 @@ double *linearRegression(double xValues[], double yValues[], int n)
     double dSlope = 0;
     double dIntercept = 0;
 
-    while (iter < 5000)
+    while (iter < 500)
     {
         double *predicted = malloc(n * sizeof(double *));
 
@@ -51,7 +51,7 @@ double *linearRegression(double xValues[], double yValues[], int n)
             predicted[i] = (xValues[i] * k) + m;
         }
         error = meanSquaredError(yValues, predicted, n);
-        printf("\n Iteration: %d, error: %f", iter, error);
+        printf("\n Iteration: %d, error: %f \n", iter, error);
 
         for (int i = 0; i < n; i++)
         {
@@ -67,6 +67,7 @@ double *linearRegression(double xValues[], double yValues[], int n)
         dSlope = dSlope / n;
         dIntercept = dIntercept / n;
 
+        printf("dSlope: %f, dIntercept: %f \n", dSlope, dIntercept);
         k -= (dSlope * learning_rate);
         m -= (dIntercept * learning_rate);
 
