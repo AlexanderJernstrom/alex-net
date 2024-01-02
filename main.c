@@ -148,9 +148,9 @@ int main()
     // Neural nets
     // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
 
-    // test_nn();
+    test_nn();
     // calculateRegression();
-    calculateLogisticRegression();
+    // calculateLogisticRegression();
     return 0;
 }
 

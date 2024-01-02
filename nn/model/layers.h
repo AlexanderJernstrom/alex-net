@@ -17,6 +17,8 @@ typedef enum
 
 typedef struct
 {
+    int in_features;
+    int out_features;
     struct Matrix weights;
     struct Matrix biases;
     struct Matrix input;
@@ -51,6 +53,8 @@ typedef struct
     LayerType type;
     void *layer;
 } Layer;
+
+DenseLayer createDenseLayer(int in_features, int out_features);
 
 void reluLayer(struct Matrix *inputMatrix, ReluLayer *layerData);
 void sigmoidLayer(struct Matrix *inputMatrix, SigmoidLayer *layerData);

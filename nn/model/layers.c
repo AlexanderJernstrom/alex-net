@@ -23,6 +23,23 @@ double gaussian_rand(double mean, double std_dev)
   return mean + std_dev * u * c;
 }
 
+DenseLayer createDenseLayer(int in_features, int out_features)
+{
+  DenseLayer dl = {};
+
+  struct Matrix weights = createMatrix(in_features, out_features);
+  struct Matrix biases = createMatrix(in_features, 1);
+
+  seed_weights(&weights);
+  seed_bias(&biases);
+
+  dl.biases = biases;
+  dl.weights = weights;
+  dl.in_features = in_features;
+  dl.out_features = out_features;
+  return dl;
+}
+
 void seed_weights(struct Matrix *weights)
 {
   for (int i = 0; i < (weights->cols * weights->rows); i++)
@@ -59,13 +76,12 @@ void sigmoidLayer(struct Matrix *inputMatrix, SigmoidLayer *layerData)
   layerData->output = *output;
 }
 
-DenseLayer *createDenseLayer() {}
 ReluLayer createReluLayer() {}
 
 void denseLayer(struct Matrix *inputMatrix, DenseLayer *layerData)
 {
 
-  struct Matrix out = createMatrix(inputMatrix->rows, inputMatrix->cols);
+  struct Matrix out = createMatrix(layerData->out_features, 1);
 
   layerData->input = *inputMatrix;
   matMul(&layerData->weights, inputMatrix, &out);
@@ -73,8 +89,7 @@ void denseLayer(struct Matrix *inputMatrix, DenseLayer *layerData)
   matAdd(&out, &layerData->biases, &out);
   inputMatrix->elements = out.elements;
 
-  struct Matrix *output_mat = deepCopyMatrix(inputMatrix);
-  layerData->output = *output_mat;
+  layerData->output = out;
 }
 
 void reshapeLayer(struct Matrix *inputMatrix, ReshapeLayer *layerData)

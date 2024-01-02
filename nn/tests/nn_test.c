@@ -10,29 +10,26 @@ void test_nn()
     setMatrix(&input_matrix, 1, 0, 2);
     setMatrix(&input_matrix, 2, 0, -10);
 
-    struct Matrix train_data = createMatrix(3, 1);
-    setMatrix(&train_data, 0, 0, 5);
-    setMatrix(&train_data, 1, 0, 4);
-    setMatrix(&train_data, 2, 0, 3);
+    struct Matrix train_data = createMatrix(1, 1);
+    setMatrix(&train_data, 0, 0, 4);
 
-    int n_layers = 3;
+    int n_layers = 4;
     Layer *layers = malloc(sizeof(Layer) * n_layers);
 
-    struct Matrix dl1_b = createMatrix(input_matrix.rows, 1);
-    struct Matrix dl1_w = createMatrix(input_matrix.rows, input_matrix.rows);
-    seed_bias(&dl1_b);
-    seed_weights(&dl1_w);
-
-    DenseLayer dl1 = {.weights = dl1_w, .biases = dl1_b};
+    DenseLayer dl1 = createDenseLayer(3, 3);
     Layer l1 = {.type = DENSE, .layer = (void *)&dl1};
     SigmoidLayer sigmoidl2 = {};
     Layer l2 = {.type = SIGMOID, .layer = (void *)&sigmoidl2};
     ReluLayer rl1 = {};
     Layer layer3 = {.type = RELU, .layer = (void *)&rl1};
+    DenseLayer dl2 = createDenseLayer(3, 1);
+    Layer layer4 = {.type = DENSE, .layer = (void *)&dl2};
 
     layers[0] = l2;
     layers[1] = l1;
     layers[2] = layer3;
+    layers[3] = layer4;
+
     //  Forward pass
 
     for (int train_iteration = 0; train_iteration < 1000; train_iteration++)
@@ -95,8 +92,6 @@ void test_nn()
         }
 
         printf("Model output, iteration: %d \n", train_iteration);
-        printMatrix(*data);
+        printMatrix(dl2.output);
     }
-    printf("WEights");
-    printMatrix(dl1_w);
 }
