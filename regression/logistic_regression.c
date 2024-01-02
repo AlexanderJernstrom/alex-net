@@ -16,7 +16,7 @@ double *logisticRegression(double xValues[], double yValues[], int n)
     double dA = 0;
     double dB = 0;
     // Can be increased here
-    while (iter < 1000)
+    while (iter < 5000)
     {
         double *predicted = malloc(n * sizeof(double *));
         for (int i = 0; i < n; i++)

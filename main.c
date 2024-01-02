@@ -10,6 +10,7 @@
 #include <stdlib.h> // pulls in declaration of malloc, free
 #include "nn/tests/nn_test.h"
 #include "examples/linear_regression_eval.h"
+#include "examples/logistic_regression_eval.h"
 // 1 2 3
 // 4 5 6
 
@@ -148,7 +149,8 @@ int main()
     // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
 
     // test_nn();
-    calculateRegression();
+    // calculateRegression();
+    calculateLogisticRegression();
     return 0;
 }
 
