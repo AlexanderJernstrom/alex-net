@@ -11,6 +11,7 @@
 #include "nn/tests/nn_test.h"
 #include "examples/linear_regression_eval.h"
 #include "examples/logistic_regression_eval.h"
+#include "examples/knn_eval.h"
 // 1 2 3
 // 4 5 6
 
@@ -148,7 +149,9 @@ int main()
     // Neural nets
     // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
 
-    test_nn();
+    // test_nn();
+
+    knn_eval();
     // calculateRegression();
     // calculateLogisticRegression();
     return 0;

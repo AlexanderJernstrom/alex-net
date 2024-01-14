@@ -3,12 +3,6 @@
 #include "./knn_eval.h"
 #include <stdlib.h>
 
-void extractHousePriceFromLine(char *line)
-{
-    const char delimiter[2] = ";";
-    char *tokens = strtok(line, delimiter);
-}
-
 // labels (Seker, Barbunya, Bombay, Cali, Dermosan, Horoz and Sira)
 int labelToNum(char *label)
 {
@@ -112,16 +106,44 @@ void knn_eval()
 {
     int n_classified = 10e4;
     int n_unclassified = 2000;
+    printf("Got here 2");
     DryBeanTest *data = loadBeanDataFromCsv();
+    printf("Got herer");
     struct Point *unclassified_points = malloc(sizeof(struct Point) * n_unclassified);
     struct knnPoint *classified_points = malloc(sizeof(struct knnPoint) * n_classified);
 
     // populate classified_points
     for (int i = 0; i < n_classified; i++)
     {
+        double *coordinates = malloc(sizeof(double) * 5);
+        coordinates[0] = data[i].area;
+        coordinates[1] = data[i].compactness;
+        coordinates[2] = data[i].convex_area;
+        coordinates[3] = data[i].roundness;
+        coordinates[4] = data[i].compactness;
         struct knnPoint classified_point = {
             .class = data[i].label,
             .dim = 5,
+            .coords = coordinates,
+
         };
+        classified_points[i] = classified_point;
     }
+
+    // populate unclassified points
+    for (int i = 0; i < (n_classified + n_unclassified); i++)
+    {
+        double *coordinates = malloc(sizeof(double) * 5);
+        coordinates[0] = data[i].area;
+        coordinates[1] = data[i].compactness;
+        coordinates[2] = data[i].convex_area;
+        coordinates[3] = data[i].roundness;
+        coordinates[4] = data[i].compactness;
+        struct Point unclassified_point = {
+            .coords = coordinates,
+            .dim = 5};
+        unclassified_points[i] = unclassified_point;
+    }
+
+    kNearestNeighbors(3, classified_points, unclassified_points, n_unclassified, n_classified);
 }
