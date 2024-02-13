@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include "./knn_eval.h"
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 
 // labels (Seker, Barbunya, Bombay, Cali, Dermosan, Horoz and Sira)
 int labelToNum(char *label)
@@ -106,9 +108,7 @@ void knn_eval()
 {
     int n_classified = 10e4;
     int n_unclassified = 2000;
-    printf("Got here 2");
     DryBeanTest *data = loadBeanDataFromCsv();
-    printf("Got herer");
     struct Point *unclassified_points = malloc(sizeof(struct Point) * n_unclassified);
     struct knnPoint *classified_points = malloc(sizeof(struct knnPoint) * n_classified);
 
@@ -144,6 +144,12 @@ void knn_eval()
             .dim = 5};
         unclassified_points[i] = unclassified_point;
     }
+    clock_t start, end;
+    double cpu_time_used;
+    start = clock();
+    int *classes = kNearestNeighbors(3, classified_points, unclassified_points, n_unclassified, n_classified);
+    end = clock();
+    cpu_time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-    kNearestNeighbors(3, classified_points, unclassified_points, n_unclassified, n_classified);
+    printf("The function took %f seconds to execute.\n", cpu_time_used);
 }

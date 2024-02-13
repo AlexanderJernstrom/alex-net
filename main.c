@@ -12,6 +12,7 @@
 #include "examples/linear_regression_eval.h"
 #include "examples/logistic_regression_eval.h"
 #include "examples/knn_eval.h"
+#include "examples/nn_eval.h"
 // 1 2 3
 // 4 5 6
 
@@ -22,7 +23,7 @@
 int main()
 {
 
-    double xValues[] = {1, 2, 3, 4, 5};
+    /* double xValues[] = {1, 2, 3, 4, 5};
     double yValues[] = {4, 7, 8, 10, 11};
 
     double *result = linearRegression(xValues, yValues, 5);
@@ -95,11 +96,11 @@ int main()
 
     struct Point unclassified[] = {unclassified1};
 
-    int *results = kNearestNeighbors(3, classifiedPoints, unclassified, 1, 4);
+    int *results = kNearestNeighbors(3, classifiedPoints, unclassified, 1, 4); */
 
     // Logistic regression tests
-    double xValuesLogistic[] = {500, 480, 550, 530, 520, 480, 400};
-    double yValuesLogistic[] = {1, 0, 1, 1, 1, 0, 0};
+    /* double xValuesLogistic[] = {500, 480, 550, 530, 520, 480, 400};
+    double yValuesLogistic[] = {1, 0, 1, 1, 1, 0, 0}; */
     // Feature scaling
     /* double meanX = 0;
     double stdDevX = 0;
@@ -140,21 +141,33 @@ int main()
     // printf("k = %f\n", simpleLinReg(xValues, yValues, 5));
     // For point(450, 0)
 
-    double observed = 0;
+    /* double observed = 0;
     double predicted = logisticFunction(450, 1, -450);
     double deltaPred = logisticFunction(450, 1 + 0.01, -450);
 
+    printf("Beginning to read data");
     double loss = pointLogLoss(observed, predicted);
-    double aLoss = pointLogLoss(observed, deltaPred);
+    double aLoss = pointLogLoss(observed, deltaPred); */
     // Neural nets
     // layers: {denseLayer, reluLayer, denseLayer, sigmoidLayer}
 
     // test_nn();
 
-    knn_eval();
-    // calculateRegression();
-    // calculateLogisticRegression();
-    return 0;
+    // knn_eval();
+    //  calculateRegression();
+    //  calculateLogisticRegression();
+
+    nn_eval();
+
+    // matmul healthcheck
+    /* struct Matrix A = createMatrix(3, 3);
+    struct Matrix B = createMatrix(3, 1);
+    struct Matrix C = {};
+
+    matMul(&A, &B, &C);
+    printf("Matrix dimensions: rows = %d, cols = %d\n", C.rows, C.cols);
+
+ */ return 0;
 }
 
 // Layer {forward_func: void, backwards_func: void}

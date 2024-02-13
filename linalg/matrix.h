@@ -16,5 +16,6 @@ void printMatrix(struct Matrix m);
 void matAdd(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out);
 struct Matrix transpose(struct Matrix *matrix);
 struct Matrix *deepCopyMatrix(const struct Matrix *original);
+struct Matrix extractVector(struct Matrix *data, int col);
 
 #endif

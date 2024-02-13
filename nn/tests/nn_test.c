@@ -50,7 +50,7 @@ void test_nn()
             case RELU:
                 reluLayer(data, layers[i].layer);
                 break;
-            case RESHAPE:
+            case SOFTMAX:
                 printf("RESHAPE");
                 break;
             }
@@ -85,7 +85,7 @@ void test_nn()
             case RELU:
                 reluLayerBackwards(&gradient, layers[i].layer);
                 break;
-            case RESHAPE:
+            case SOFTMAX:
                 printf("RESHAPE");
                 break;
             }

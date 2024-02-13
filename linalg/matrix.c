@@ -40,10 +40,16 @@ void matAdd(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
             out->elements[i] = matrixA->elements[i] + matrixB->elements[i];
         }
     }
-    else
+}
+
+struct Matrix extractVector(struct Matrix *data, int col)
+{
+    struct Matrix vector = createMatrix(data->rows, 1);
+    for (int i = 0; i < data->rows; i++)
     {
-        printf("Something wrong with dims \n");
+        setMatrix(&vector, i, 0, getVal(&vector, i, col));
     }
+    return vector;
 }
 
 struct Matrix *deepCopyMatrix(const struct Matrix *original)
@@ -78,13 +84,13 @@ struct Matrix *deepCopyMatrix(const struct Matrix *original)
 
 void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
 {
-    if (matrixA->cols != matrixB->rows || out->rows != matrixA->rows || out->cols == matrixB->cols)
-    {
-        printf("Wrong dimensions");
-    }
+
     int n = matrixA->cols;
     int m = matrixA->rows;
     int p = matrixB->cols;
+
+    struct Matrix out_matrix = createMatrix(matrixA->rows, matrixB->cols);
+
     for (int i = 0; i < m; i++)
     {
         for (int j = 0; j < p; j++)
@@ -95,9 +101,12 @@ void matMul(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
             {
                 sum = sum + (getVal(matrixA, i, k) * getVal(matrixB, k, j));
             }
-            setMatrix(out, i, j, sum);
+            setMatrix(&out_matrix, i, j, sum);
         }
     }
+    out->cols = out_matrix.cols;
+    out->rows = out_matrix.rows;
+    out->elements = out_matrix.elements;
 };
 
 struct Matrix transpose(struct Matrix *matrix)

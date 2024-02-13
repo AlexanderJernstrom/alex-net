@@ -25,6 +25,8 @@
     "vector": "c",
     "concepts": "c",
     "type_traits": "c",
-    "activation_functions.h": "c"
+    "activation_functions.h": "c",
+    "layers.h": "c",
+    "nn_eval.h": "c"
   }
 }

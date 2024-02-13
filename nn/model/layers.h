@@ -12,7 +12,7 @@ typedef enum
     DENSE,
     RELU,
     SIGMOID,
-    RESHAPE
+    SOFTMAX
 } LayerType;
 
 typedef struct
@@ -41,6 +41,12 @@ typedef struct
 {
     struct Matrix input;
     struct Matrix output;
+} SoftmaxLayer;
+
+typedef struct
+{
+    struct Matrix input;
+    struct Matrix output;
 } SigmoidLayer;
 
 typedef union
@@ -59,7 +65,9 @@ DenseLayer createDenseLayer(int in_features, int out_features);
 void reluLayer(struct Matrix *inputMatrix, ReluLayer *layerData);
 void sigmoidLayer(struct Matrix *inputMatrix, SigmoidLayer *layerData);
 void denseLayer(struct Matrix *inputMatrix, DenseLayer *layerData);
+void softmaxLayer(struct Matrix *inputMatrix, SoftmaxLayer *layerData);
 void denseLayerBackward(struct Matrix *gradient, DenseLayer *layer, struct Matrix *outputDerivative, double learning_rate);
 void sigmoidLayerBackwards(struct Matrix *gradient, SigmoidLayer *layer);
 void reluLayerBackwards(struct Matrix *gradient, ReluLayer *layer);
+void softmaxLayerBackwards(struct Matrix *gradient, SoftmaxLayer *layer);
 #endif
