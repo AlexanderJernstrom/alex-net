@@ -1,3 +1,4 @@
 *.out
 *.dSYM
 *.o
+examples/data/MNIST/mnist_train.csv
