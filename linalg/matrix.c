@@ -42,14 +42,26 @@ void matAdd(struct Matrix *matrixA, struct Matrix *matrixB, struct Matrix *out)
     }
 }
 
-struct Matrix extractVector(struct Matrix *data, int col)
+void indexToRowCol(struct Matrix *m, int index, int *row, int *col)
 {
-    struct Matrix vector = createMatrix(data->rows, 1);
-    for (int i = 0; i < data->rows; i++)
+    *col = index % (m->cols);
+    *row = index / (m->cols);
+}
+
+struct Matrix extractVector(struct Matrix *matrix, int rowIndex)
+{
+
+    // Create a new matrix (row vector) with 1 row and the same number of columns as the original matrix
+    struct Matrix rowVector = createMatrix(1, matrix->cols);
+
+    // Copy the specified row from the original matrix to the new matrix (row vector)
+    for (int j = 0; j < matrix->cols; j++)
     {
-        setMatrix(&vector, i, 0, getVal(&vector, i, col));
+        double value = getVal(matrix, rowIndex, j);
+        setMatrix(&rowVector, 0, j, value);
     }
-    return vector;
+
+    return rowVector;
 }
 
 struct Matrix *deepCopyMatrix(const struct Matrix *original)

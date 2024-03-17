@@ -1,22 +1,24 @@
-#ifndef KNN_EVAL 
+#ifndef KNN_EVAL
 #define KNN_EVAL
 
 void knn_eval();
 
-typedef struct {
-    int area;
-    float solidity;
-    int convex_area;
-    float roundness;
-    float compactness;
+typedef struct
+{
+    double area;
+    double solidity;
+    double convex_area;
+    double roundness;
+    double compactness;
 } DryBeanTrain;
 
-typedef struct {
-    int area;
-    float solidity;
-    int convex_area;
-    float roundness;
-    float compactness;
+typedef struct
+{
+    double area;
+    double solidity;
+    double convex_area;
+    double roundness;
+    double compactness;
     int label;
 } DryBeanTest;
 

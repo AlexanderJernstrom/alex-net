@@ -8,31 +8,31 @@
 // labels (Seker, Barbunya, Bombay, Cali, Dermosan, Horoz and Sira)
 int labelToNum(char *label)
 {
-    if (strcmp(label, "Seker") == 0)
+    if (strcmp(label, "SEKER\r\n") == 0)
     {
         return 1;
     }
-    else if (strcmp(label, "Barbunya") == 0)
+    else if (strcmp(label, "BARBUNYA\r\n") == 0)
     {
         return 2;
     }
-    else if (strcmp(label, "Bombay") == 0)
+    else if (strcmp(label, "BOMBAY\r\n") == 0)
     {
         return 3;
     }
-    else if (strcmp(label, "Cali") == 0)
+    else if (strcmp(label, "CALI\r\n") == 0)
     {
         return 4;
     }
-    else if (strcmp(label, "Dermosan") == 0)
+    else if (strcmp(label, "DERMOSAN\r\n") == 0)
     {
         return 5;
     }
-    else if (strcmp(label, "Horoz") == 0)
+    else if (strcmp(label, "HOROZ\r\n") == 0)
     {
         return 6;
     }
-    else if (strcmp(label, "Sira") == 0)
+    else if (strcmp(label, "SIRA\r\n") == 0)
     {
         return 7;
     }
@@ -45,7 +45,7 @@ int labelToNum(char *label)
 
 DryBeanTest *loadBeanDataFromCsv()
 {
-    int n_training = 13e4;
+    int n_training = 13000;
     FILE *stream = fopen("examples/data/Dry_Beans_Dataset_Table.csv", "r");
     if (stream == NULL)
     {
@@ -60,9 +60,9 @@ DryBeanTest *loadBeanDataFromCsv()
     {
         if (line_number > 0)
         {
-            char *token = strtok(line, ",");
+            char *token = strtok(line, ";");
             int column = 1; // Start from the first column
-            float area, solidity, convex_area, roundness, compactness;
+            double area, solidity, convex_area, roundness, compactness;
             char *label;
 
             while (token != NULL)
@@ -74,7 +74,6 @@ DryBeanTest *loadBeanDataFromCsv()
                 else if (column == 10)
                 {
                     solidity = atof(token);
-                    break; // No need to tokenize further
                 }
                 else if (column == 11)
                 {
@@ -92,12 +91,12 @@ DryBeanTest *loadBeanDataFromCsv()
                 {
                     label = token;
                 }
-                token = strtok(NULL, ",");
+                token = strtok(NULL, ";");
                 column++;
             }
             DryBeanTest data = {.area = area, .compactness = compactness, .solidity = solidity, .roundness = roundness, .convex_area = convex_area};
             data.label = labelToNum(label);
-            train_set[line_number] = data;
+            train_set[line_number - 1] = data;
         }
         line_number++;
     }
@@ -106,7 +105,7 @@ DryBeanTest *loadBeanDataFromCsv()
 
 void knn_eval()
 {
-    int n_classified = 10e4;
+    int n_classified = 10000;
     int n_unclassified = 2000;
     DryBeanTest *data = loadBeanDataFromCsv();
     struct Point *unclassified_points = malloc(sizeof(struct Point) * n_unclassified);
@@ -131,7 +130,7 @@ void knn_eval()
     }
 
     // populate unclassified points
-    for (int i = 0; i < (n_classified + n_unclassified); i++)
+    for (int i = n_classified; i < 12000; i++)
     {
         double *coordinates = malloc(sizeof(double) * 5);
         coordinates[0] = data[i].area;
@@ -142,7 +141,7 @@ void knn_eval()
         struct Point unclassified_point = {
             .coords = coordinates,
             .dim = 5};
-        unclassified_points[i] = unclassified_point;
+        unclassified_points[i - n_classified] = unclassified_point;
     }
     clock_t start, end;
     double cpu_time_used;

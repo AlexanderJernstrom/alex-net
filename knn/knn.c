@@ -8,7 +8,8 @@ int *kNearestNeighbors(int k, struct knnPoint classifiedPoints[], struct Point u
 {
     if (k > nClassified)
     {
-        return NULL;
+        perror("k cannot be larger than nClassified");
+        exit(1);
     }
     int *classes = malloc(sizeof(int) * nUnclassified);
     for (int i = 0; i < nUnclassified; i++)
@@ -19,7 +20,8 @@ int *kNearestNeighbors(int k, struct knnPoint classifiedPoints[], struct Point u
             double distance = 0;
             if (unclassified[i].dim != classifiedPoints[i].dim)
             {
-                return NULL;
+                perror("Non matching dims");
+                exit(1);
             }
             for (int d = 0; d < classifiedPoints[j].dim; d++)
             {
@@ -60,7 +62,8 @@ int pickPointClass(struct knnPointDist pointDistance[], int k, int n)
 {
     if (k > n)
     {
-        return NULL;
+        perror("k cannot be larger than n");
+        exit(1);
     }
     qsort(pointDistance, n, sizeof(struct knnPointDist), comparePoints);
 
@@ -88,8 +91,6 @@ int pickPointClass(struct knnPointDist pointDistance[], int k, int n)
         occurenceStruct.occurences = occurence;
         occurences[i] = occurenceStruct;
     }
-    printf("occurences: %d, class: %d\n", occurences[0].occurences, occurences[0].class);
-    printf("occurences: %d, class:%d \n", occurences[1].occurences, occurences[1].class);
     qsort(occurences, k, sizeof(struct classOccurence), comparOccurences);
 
     return occurences[0].class;

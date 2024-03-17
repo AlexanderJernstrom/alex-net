@@ -5,10 +5,11 @@
 #include "../functions/loss_functions.h"
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 // Load mnist data
 const int LABELS = 10;
-const double LEARNING_RATE = 0.01;
+const double LEARNING_RATE = 0.009;
 
 void ReadMNIST(struct Matrix *train_values, struct Matrix *labels, int n_points)
 {
@@ -39,7 +40,7 @@ void ReadMNIST(struct Matrix *train_values, struct Matrix *labels, int n_points)
                 else if (column <= 784)
                 {
                     // Populate matrix and normalize pixel values
-                    setMatrix(train_values, column - 1, line_number - 1, atof(token) / 255);
+                    setMatrix(train_values, line_number - 1, column - 2, (double)atof(token) / 255);
                 }
 
                 token = strtok(NULL, ",");
@@ -50,6 +51,20 @@ void ReadMNIST(struct Matrix *train_values, struct Matrix *labels, int n_points)
         }
         line_number++;
     }
+}
+
+void ReadMNISTRow(struct Matrix *train_sample, int *label, int line_number)
+{
+
+    FILE *stream = fopen("examples/data/MNIST/mnist_train.csv", "r");
+    if (stream == NULL)
+    {
+        perror("Unable to open the file.");
+        exit(1);
+    }
+
+    char line[5700];
+    fgets(line, 5700, stream);
 }
 
 void backwardPass(Layer *layers, struct Matrix *gradient, int n_layers)
@@ -106,9 +121,11 @@ void forwardPass(Layer *layers, struct Matrix *data, int n_layers)
 
 void nn_eval()
 {
-    int n_data_points = 10e4;
-    int epochs = 10;
-    struct Matrix train_data = createMatrix(784, n_data_points);
+    srand(time(NULL));
+
+    int n_data_points = 12000;
+    int epochs = 3;
+    struct Matrix train_data = createMatrix(n_data_points, 784);
     struct Matrix labels = createMatrix(n_data_points, 1);
     // setup data, input data 784 length vector
     ReadMNIST(&train_data, &labels, n_data_points);
@@ -135,30 +152,61 @@ void nn_eval()
     layers[1] = l2;
     layers[2] = l3;
     layers[3] = l4;
+
     for (int e = 0; e < epochs; e++)
     {
         double error = 0;
-        for (int i = 0; i < 200; i++)
+        for (int i = 0; i < 8000; i++)
         {
+            // Define the range
+            int min = 0;
+            int max = 8000;
 
+            // Generate random number in [min, max]
+            int randomIndex = min + rand() % (max - min + 1);
             // One hot encode label
             struct Matrix one_hot = createMatrix(1, LABELS);
-            setMatrix(&one_hot, labels.elements[i] - 1, 0, 1);
+            setMatrix(&one_hot, 0, labels.elements[randomIndex], 1);
 
-            struct Matrix X = extractVector(&train_data, i);
+            struct Matrix X = extractVector(&train_data, randomIndex);
 
-            struct Matrix tranposed_X = transpose(&X);
-            forwardPass(layers, &tranposed_X, n_layers);
+            forwardPass(layers, &X, n_layers);
 
-            struct Matrix gradient = crossEntropyDerivative(LABELS, &one_hot, &tranposed_X);
+            struct Matrix gradient = crossEntropyDerivative(LABELS, &one_hot, &X);
 
             backwardPass(layers, &gradient, n_layers);
-
-            double loss = crossEntropy(LABELS, tranposed_X, one_hot);
+            double loss = crossEntropy(LABELS, X, one_hot);
             error += loss;
+            free(X.elements);
         }
-        printf("Epoch: %d, Loss: %f \n", e, error);
+        printf("Epoch: %d, Loss: %f \n", e, error / 8000);
+        // printMatrix(dl1.output);
+        // printMatrix(dl1.input);
     }
 
-    printf("\nTraining done");
+    printf("\nTraining done\n");
+    // validation
+    int corrects = 0;
+    for (int i = 0; i < 3000; i++)
+    {
+        struct Matrix X = extractVector(&train_data, i + 8000);
+
+        forwardPass(layers, &X, n_layers);
+
+        int argMaxIndex = 0;
+
+        for (int j = 0; j < (X.cols * X.rows); j++)
+        {
+            if (X.elements[j] > X.elements[argMaxIndex])
+            {
+                argMaxIndex = j;
+            }
+        }
+
+        if (argMaxIndex == labels.elements[i])
+        {
+            corrects++;
+        }
+    }
+    printf("Validation done, correct amount: %d correct: %f \n", corrects, ((float)corrects / 3000) * 100);
 }

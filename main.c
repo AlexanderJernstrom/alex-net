@@ -153,13 +153,13 @@ int main()
 
     // test_nn();
 
-    // knn_eval();
-    //  calculateRegression();
+    knn_eval();
+    //   calculateRegression();
+    //   calculateLogisticRegression();
+
+    // nn_eval();
     //  calculateLogisticRegression();
-
-    nn_eval();
-
-    // matmul healthcheck
+    //   matmul healthcheck
     /* struct Matrix A = createMatrix(3, 3);
     struct Matrix B = createMatrix(3, 1);
     struct Matrix C = {};

@@ -88,20 +88,16 @@ ReluLayer createReluLayer() {}
 
 void denseLayer(struct Matrix *inputMatrix, DenseLayer *layerData)
 {
-  /*   printf("out_features: %d\n", layerData->out_features);
-    printf("in_features: %d\n", layerData->in_features);
-    printf("Size dimensions of layerData->weights: %d x %d\n", layerData->weights.rows, layerData->weights.cols);
-   */
   struct Matrix out = {};
   layerData->input = *inputMatrix;
   matMul(inputMatrix, &layerData->weights, &out);
 
   matAdd(inputMatrix, &layerData->biases, inputMatrix);
 
-  layerData->output = *inputMatrix;
   inputMatrix->cols = out.cols;
   inputMatrix->rows = out.rows;
   inputMatrix->elements = out.elements;
+  layerData->output = *inputMatrix;
 }
 
 void reshapeLayer(struct Matrix *inputMatrix, ReshapeLayer *layerData)
@@ -117,16 +113,22 @@ void denseLayerBackward(struct Matrix *gradient, DenseLayer *layer, struct Matri
 {
   // X(transpose)
   struct Matrix transposed_input = transpose(&layer->input);
-
-  struct Matrix d_weights = createMatrix(layer->weights.rows, layer->weights.cols);
-  matMul(&transposed_input, outputDerivative, gradient);
+  /*   printf("Dimensions of transposed_input: %d x %d\n", transposed_input.rows, transposed_input.cols);
+    printf("Dimensions of outputDerivative: %d x %d\n", outputDerivative->rows, outputDerivative->cols);
+   */
+  struct Matrix d_weights = {};
+  matMul(&transposed_input, outputDerivative, outputDerivative);
   matMul(&transposed_input, outputDerivative, &d_weights);
 
   for (int i = 0; i < (d_weights.cols * d_weights.rows); i++)
   {
-    d_weights.elements[i] += learning_rate * d_weights.elements[i];
+
+    d_weights.elements[i] = -learning_rate * d_weights.elements[i];
   }
   matAdd(&layer->weights, &d_weights, &layer->weights);
+  /*
+    printf("Dimensions of layer->weights: %d x %d\n", layer->weights.rows, layer->weights.cols);
+    printf("Dimensions of layer->d_weights: %d x %d\n", d_weights.rows, d_weights.cols); */
 }
 
 //
@@ -142,28 +144,29 @@ void sigmoidLayerBackwards(struct Matrix *gradient, SigmoidLayer *layer)
 
 void softmaxLayerBackwards(struct Matrix *gradient, SoftmaxLayer *layer)
 {
-  struct Matrix jacobian = createMatrix(layer->input.rows, layer->input.rows);
-  // Jacobian will always be square
-  int n = layer->input.rows;
-
+  struct Matrix jacobian = createMatrix(layer->input.cols, layer->input.cols);
   for (int i = 0; i < (jacobian.cols * jacobian.rows); i++)
   {
-    for (int j = 0; j < (jacobian.cols * jacobian.rows); j++)
+    int row;
+    int col;
+    indexToRowCol(&jacobian, i, &row, &col);
+    if (col == row)
     {
-      int index = (i * n) + j;
-      if (i == j)
-      {
-        jacobian.elements[index] = layer->output.elements[i] * (1 - layer->output.elements[i]);
-      }
-      else
-      {
-        jacobian.elements[index] = -layer->output.elements[i] * layer->output.elements[j];
-      }
+
+      jacobian.elements[i] = layer->output.elements[col] * (1 - layer->output.elements[col]);
+    }
+    else
+    {
+
+      jacobian.elements[i] = -layer->output.elements[row] * layer->output.elements[col];
     }
   }
 
   struct Matrix transposed_gradient = transpose(gradient);
+  /* printf("Dimensions of gradient: %d x %d\n", gradient->rows, gradient->cols);
+  printf("Dimensions of jacobian: %d x %d\n", jacobian.rows, jacobian.cols);
 
+ */
   matMul(&transposed_gradient, &jacobian, gradient);
   /* printf("Gradient matrix after matmul in softmax \n");
   printMatrix(*gradient); */
@@ -179,5 +182,9 @@ void reluLayerBackwards(struct Matrix *gradient, ReluLayer *layer)
     input->elements[i] = dReLU(input->elements[i]);
   }
   struct Matrix transposed_gradient = transpose(gradient);
-  matMul(&transposed_gradient, input, gradient);
+  struct Matrix transposed_input = transpose(input);
+
+  matMul(&transposed_gradient, &transposed_input, gradient);
+  free(transposed_gradient.elements);
+  free(transposed_input.elements);
 }

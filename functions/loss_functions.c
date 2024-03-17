@@ -57,7 +57,7 @@ struct Matrix crossEntropyDerivative(int C, struct Matrix *true_values, struct M
         perror("Predicted and true values must be of same size");
         exit(1);
     }
-    struct Matrix gradient = createMatrix(true_values->cols, 1);
+    struct Matrix gradient = createMatrix(1, true_values->cols);
 
     for (int i = 0; i < C; i++)
     {
